@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "ignore": ["C:\\Users\\SAMMIE\\WebstormProjects\\Learning\\chatapp"],
+  "execMap": {
+    "rb": "ruby",
+    "pde": "processing --sketch={{pwd}} --run"
+  }
+}
