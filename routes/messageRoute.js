@@ -3,6 +3,7 @@ const Message = require("../models/messageModel")
 const ChatBox = require("../models/chatBox")
 const authMiddleWare = require("../middleware/authMiddleWare")
 
+
 router.post("/newMessage", authMiddleWare,  async (req, res) => {
     try {
         const newMessage = new Message(req.body);
@@ -10,8 +11,6 @@ router.post("/newMessage", authMiddleWare,  async (req, res) => {
         const chat = await ChatBox.findById(req.body.chat);
         chat.lastMessage = savedMessage._id;
          await chat.save();
-        console.log(req.body)
-
         res.send({
             success: true,
             message:"Message Sent succesfully",
@@ -29,10 +28,6 @@ router.get("/getAllMessages/:chatId", authMiddleWare,  async (req, res) =>{
     try {
         const messages = await Message.find({
             chat:req.params.chatId,})
-
-        console.log(req.params.chatId + "This is the chat Id coming in to request params")
-
-        console.log("this is the messages up here " + messages)
         res.send({
             success:true,
             message:"Messages fetched successfully",
@@ -46,6 +41,29 @@ router.get("/getAllMessages/:chatId", authMiddleWare,  async (req, res) =>{
             message:"error fetching messages",
             error: error.message
         })}
+
+
+})
+router.delete("/deleteMessage/:messageId", authMiddleWare, async(req, res) => {
+    try{
+      await Message.findByIdAndDelete(req.params.messageId)
+        res.send({
+            success:true,
+            message: "Message deleted successfully",
+            data: deleted
+
+        })
+    }
+    catch (error){
+        res.send({
+            success:false,
+            message: "error deleting messages",
+            error: error.message
+        })
+    }
+
+
+
 
 
 })
